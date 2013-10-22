@@ -1,0 +1,11 @@
+{% extends 'master.html' %}
+{% block body %} 
+<h4>{{username}}</h4>
+<ul>
+{% for post in the_posts %}
+
+    <li>{{ post[0]}}: {{post[1] }}</li>
+
+{% endfor %}
+</ul>
+{% endblock %}
