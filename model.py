@@ -12,13 +12,13 @@ def connect_to_db():
 
 
 def get_user_by_name(username):
-    # connect_to_db()
-
+    connect_to_db()
     query = """SELECT id FROM users WHERE username = ?"""
     DB.execute(query, (username,))
     return DB.fetchone()[0]
 
 def authenticate(username, password):
+    connect_to_db()
     query = """SELECT id, username, password FROM users WHERE username = ?"""
     DB.execute(query, (username, ))
     row = DB.fetchone()
@@ -28,10 +28,7 @@ def authenticate(username, password):
     else:
         return None
 
-# print authenticate("meghan", "urback")
-
 def get_wall_posts(userid):
-    # connect_to_db()
     query = """SELECT created_at, content FROM wall_posts WHERE owner_id = ?"""
     DB.execute(query, (userid, ))
     return DB.fetchall()
