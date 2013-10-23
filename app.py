@@ -8,7 +8,7 @@ app.secret_key = "shhhhthisisasecret"
 def index():
     if session.get("username"):
         return redirect(url_for("view_user", username=session.get("username")))
-    else: 
+    else:
         return render_template("index.html")
 
 @app.route("/", methods=["POST"])
@@ -22,7 +22,7 @@ def process_login():
         session['username'] = username
     else:
         flash("Password incorrect, there may be a ferret stampede in progress!")
-    
+
     return redirect(url_for("index"))
 
 @app.route("/register")
@@ -46,10 +46,12 @@ def post_to_wall(username):
     post_author = session.get("username")
     wall_text = request.form.get("wallText")
     wall_owner = username
-    return "%s %s %s" % (wall_text, post_author, wall_owner)
-    # return "test"
+    post_author_id = model.get_user_by_name(post_author)
+    wall_owner_id = model.get_user_by_name(wall_owner)
+    model.create_wall_post(wall_owner_id, post_author_id, wall_text)
+    #return "%s %s %s" % (wall_text, post_author, wall_owner)
+    return redirect(url_for("view_user", username=username))
 
 if __name__ == "__main__":
     app.run(debug = True)
-
 
