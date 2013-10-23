@@ -27,7 +27,10 @@ def process_login():
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    if session.get("username"):
+        return redirect(url_for("view_user", username=session.get("username")))
+    else:
+        return render_template("register.html")
 
 @app.route("/clear")
 def clear():
