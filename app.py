@@ -41,7 +41,13 @@ def view_user(username):
     posts = model.get_wall_posts(user_id)
     return render_template("wall.html", the_posts=posts, username=username)
 
-
+@app.route("/user/<username>", methods=["POST"])
+def post_to_wall(username):
+    post_author = session.get("username")
+    wall_text = request.form.get("wallText")
+    wall_owner = username
+    return "%s %s %s" % (wall_text, post_author, wall_owner)
+    # return "test"
 
 if __name__ == "__main__":
     app.run(debug = True)
