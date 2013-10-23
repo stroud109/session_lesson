@@ -23,7 +23,7 @@ def authenticate(username, password):
     DB.execute(query, (username, ))
     row = DB.fetchone()
   
-    if username == row[1] and hash(password) == hash(row[2]):
+    if row and username == row[1] and hash(password) == hash(row[2]):
         return row[0] # userid
     else:
         return None
