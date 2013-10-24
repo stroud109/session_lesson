@@ -25,9 +25,23 @@ def process_login():
 
     return redirect(url_for("index"))
 
+@app.route("/register", methods=["POST"])
+def create_account(): # THIS DOESN'T WORK RIGHT NOW
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    if model.get_user_by_name(username):
+        flash("Your account already exists!")
+        return redirect(url_for("index"))
+    else:
+        model.create_user(username, password)
+        flash("You successfully created your account!")
+        return redirect("/")
+
 @app.route("/register")
 def register():
     if session.get("username"):
+        flash("You already have an account!")
         return redirect(url_for("view_user", username=session.get("username")))
     else:
         return render_template("register.html")

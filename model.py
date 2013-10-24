@@ -11,11 +11,16 @@ def connect_to_db():
     DB = CONN.cursor()
 
 
-def get_user_by_name(username):
+def get_user_by_name(username): #this may need to change
     connect_to_db()
     query = """SELECT id FROM users WHERE username = ?"""
     DB.execute(query, (username,))
-    return DB.fetchone()[0]
+    row = DB.fetchone()
+    if row:
+        return row[0]
+    else:
+        return None
+
 
 def authenticate(username, password):
     connect_to_db()
@@ -33,6 +38,13 @@ def create_wall_post(the_owner_id, the_author_id, the_content):
     query = """INSERT INTO wall_posts (owner_id, author_id, created_at, content) VALUES (?, ?, CURRENT_DATE, ?)"""
     DB.execute(query,(the_owner_id, the_author_id, the_content))
     CONN.commit()
+
+def create_user(username, password):
+    connect_to_db()
+    query = """INSERT INTO users (username, password) VALUES (?, ?)"""
+    DB.execute(query, (username, password))
+    CONN.commit()
+
 
 def get_wall_posts(userid):
     connect_to_db()
